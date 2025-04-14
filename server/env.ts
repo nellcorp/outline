@@ -203,6 +203,11 @@ export class Environment {
   public DEBUG = environment.DEBUG || "";
 
   /**
+   * Whether to redirect to the external URL
+   */
+  public REDIRECT_URL = environment.REDIRECT_URL || "";
+
+  /**
    * Configure lowest severity level for server logs
    */
   @IsIn(["error", "warn", "info", "http", "verbose", "debug", "silly"])
