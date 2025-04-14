@@ -19,8 +19,8 @@ jobs:
     - name: Publish image and deploy
       run: |
         docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-        docker buildx build -f Dockerfile.base --rm -t ${{ env.BASE_IMAGE_NAME }}:0.0.1 --platform linux/arm64 --push .
-        docker buildx build --rm -t ${{ env.IMAGE_NAME }}:0.0.1 --platform linux/arm64 --push .
+        docker buildx build -f Dockerfile.base --rm -t ${{ env.BASE_IMAGE_NAME }}:0.0.2 --platform linux/arm64 --push .
+        docker buildx build --rm -t ${{ env.IMAGE_NAME }}:0.0.2 --platform linux/arm64 --push .
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
