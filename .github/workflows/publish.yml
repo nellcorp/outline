@@ -1,0 +1,26 @@
+name: Deploy to production
+
+on:
+  push:
+    branches:
+    - development
+
+env:
+  IMAGE_NAME: nellcorp/outline
+  BASE_IMAGE_NAME: nellcorp/outline-base
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Current branch
+      uses: actions/checkout@v3
+    - name: Publish image and deploy
+      run: |
+        docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+        docker buildx build -f Dockerfile.base --rm -t ${{ env.BASE_IMAGE_NAME }}:0.0.1 --platform linux/arm64 --push .
+        docker buildx build --rm -t ${{ env.IMAGE_NAME }}:0.0.1 --platform linux/arm64 --push .
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
