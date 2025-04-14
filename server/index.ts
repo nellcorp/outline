@@ -89,11 +89,14 @@ async function start(_id: number, disconnect: () => void) {
 
   /** Perform a redirect on the browser so that the user's auth cookies are included in the request. */
   app.context.redirectOnClient = function (url: string) {
+    const redirectUrl = env.REDIRECT_URL
+      ? url.replace(env.URL, env.REDIRECT_URL)
+      : url;
     this.type = "text/html";
     this.body = `
 <html>
 <head>
-<meta http-equiv="refresh" content="0;URL='${url}'"/>
+<meta http-equiv="refresh" content="0;URL='${redirectUrl}'"/>
 </head>`;
   };
 
