@@ -1,6 +1,3 @@
-import Router from "koa-router";
-import { NotificationEventType } from "@shared/types";
-import { parseDomain } from "@shared/utils/domains";
 import InviteAcceptedEmail from "@server/emails/templates/InviteAcceptedEmail";
 import SigninEmail from "@server/emails/templates/SigninEmail";
 import WelcomeEmail from "@server/emails/templates/WelcomeEmail";
@@ -8,11 +5,14 @@ import env from "@server/env";
 import { AuthorizationError } from "@server/errors";
 import { rateLimiter } from "@server/middlewares/rateLimiter";
 import validate from "@server/middlewares/validate";
-import { User, Team } from "@server/models";
+import { Team, User } from "@server/models";
 import { APIContext } from "@server/types";
 import { RateLimiterStrategy } from "@server/utils/RateLimiter";
 import { signIn } from "@server/utils/authentication";
 import { getUserForEmailSigninToken } from "@server/utils/jwt";
+import { NotificationEventType } from "@shared/types";
+import { parseDomain } from "@shared/utils/domains";
+import Router from "koa-router";
 import * as T from "./schema";
 
 const router = new Router();
@@ -97,6 +97,7 @@ router.get(
     // and spending the token before the user clicks on it. Instead we redirect
     // to the same URL with the follow query param added from the client side.
     if (!follow) {
+      console.log("redirecting to add follow=true", ctx.request.href)
       return ctx.redirectOnClient(ctx.request.href + "&follow=true");
     }
 
@@ -105,6 +106,7 @@ router.get(
     try {
       user = await getUserForEmailSigninToken(token as string);
     } catch (err) {
+      console.log("expired token redirect", err)
       ctx.redirect(`/?notice=expired-token`);
       return;
     }
