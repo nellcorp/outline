@@ -19,7 +19,7 @@ const router = new Router();
 
 router.post(
   "email",
-  rateLimiter(RateLimiterStrategy.TenPerHour),
+  rateLimiter(RateLimiterStrategy.TwentyFivePerMinute),
   validate(T.EmailSchema),
   async (ctx: APIContext<T.EmailReq>) => {
     const { email, client } = ctx.input.body;

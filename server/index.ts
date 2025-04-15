@@ -4,6 +4,7 @@ import env from "./env";
 
 import "./logging/tracer"; // must come before importing any instrumented module
 
+import { defaultRateLimiter } from "@server/middlewares/rateLimiter";
 import http from "http";
 import https from "https";
 import Koa from "koa";
@@ -14,18 +15,17 @@ import { AddressInfo } from "net";
 import stoppable from "stoppable";
 import throng from "throng";
 import Logger from "./logging/Logger";
-import services from "./services";
-import { getArg } from "./utils/args";
-import { getSSLOptions } from "./utils/ssl";
-import { defaultRateLimiter } from "@server/middlewares/rateLimiter";
-import { printEnv, checkPendingMigrations } from "./utils/startup";
-import { checkUpdates } from "./utils/updates";
+import Metrics from "./logging/Metrics";
 import onerror from "./onerror";
-import ShutdownHelper, { ShutdownOrder } from "./utils/ShutdownHelper";
+import services from "./services";
 import { checkConnection, sequelize } from "./storage/database";
 import RedisAdapter from "./storage/redis";
-import Metrics from "./logging/Metrics";
+import { getArg } from "./utils/args";
 import { PluginManager } from "./utils/PluginManager";
+import ShutdownHelper, { ShutdownOrder } from "./utils/ShutdownHelper";
+import { getSSLOptions } from "./utils/ssl";
+import { checkPendingMigrations, printEnv } from "./utils/startup";
+import { checkUpdates } from "./utils/updates";
 
 // The number of processes to run, defaults to the number of CPU's available
 // for the web service, and 1 for collaboration during the beta period.
