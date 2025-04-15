@@ -97,7 +97,6 @@ router.get(
     // and spending the token before the user clicks on it. Instead we redirect
     // to the same URL with the follow query param added from the client side.
     if (!follow) {
-      console.log("redirecting to add follow=true", ctx.request.href)
       return ctx.redirectOnClient(ctx.request.href + "&follow=true");
     }
 
@@ -106,7 +105,6 @@ router.get(
     try {
       user = await getUserForEmailSigninToken(token as string);
     } catch (err) {
-      console.log("expired token redirect", err)
       ctx.redirect(`/?notice=expired-token`);
       return;
     }

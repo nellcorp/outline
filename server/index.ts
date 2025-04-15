@@ -92,10 +92,6 @@ async function start(_id: number, disconnect: () => void) {
     const redirectUrl = env.REDIRECT_URL
       ? url.replace(env.URL, env.REDIRECT_URL)
       : url;
-    console.log("Redirecting", {
-      redirectUrl,
-      url,
-    });
     this.type = "text/html";
     this.body = `
 <html>
